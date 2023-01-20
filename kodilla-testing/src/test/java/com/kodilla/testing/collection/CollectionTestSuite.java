@@ -1,9 +1,13 @@
 package com.kodilla.testing.collection;
 
-import org.junit.jupiter.api.*;
+import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class CollectionTestSuite {
 
@@ -12,16 +16,12 @@ public class CollectionTestSuite {
     @Test
     void testOddNumbersExterminatorEmptyList(){
         //Given
-        Integer list[]= new Integer[] {};
-        List<Integer> emptyList = Arrays.asList(list);
-
-        OddNumbersExterminator oddNumbersExterminatorList = new OddNumbersExterminator(emptyList);
-
+        ArrayList<Integer> emptyList=new ArrayList<Integer>();
         //When
-        List<Integer> testList = oddNumbersExterminatorList.exterminate(emptyList);
-
+        ArrayList<Integer> listNumbers=OddNumbersExterminator.exterminate(emptyList);
+        System.out.println("Testing"+listNumbers);
         //Then
-        Assertions.assertEquals(0 ,testList.size());
+        Assert.assertEquals(emptyList,listNumbers);
     }
 
 
@@ -39,19 +39,14 @@ public class CollectionTestSuite {
     @Test
     void testOddNumbersExterminatorNormalList (){
         //Given
-        Integer list[]= new Integer[] {1, 2, 3, 4, 5};
-        List<Integer> normalList = Arrays.asList(list);
-        Integer list2[]= new Integer[] {2, 4};
-        List<Integer> expectedList = Arrays.asList(list2);
-
-        OddNumbersExterminator oddNumbersExterminatorList = new OddNumbersExterminator(normalList);
+        ArrayList<Integer> list=new ArrayList<Integer>(Arrays.asList(234,567,22,899,12,15,3,5));
+        ArrayList<Integer> oddList=new ArrayList<Integer>(Arrays.asList(234,22,12));
 
         //When
-        List<Integer> testList = oddNumbersExterminatorList.exterminate(normalList);
-
+        ArrayList<Integer> listNumbers=OddNumbersExterminator.exterminate(list);
+        System.out.println("Testing"+listNumbers);
         //Then
-        Assertions.assertEquals(2, testList.size());
-        Assertions.assertEquals(expectedList, testList);
+        Assert.assertEquals(oddList,listNumbers);
     }
 
 }
