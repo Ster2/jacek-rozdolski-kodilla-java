@@ -149,7 +149,6 @@ class BoardTestSuite {
     public void testAddTaskListAverageWorkingOnTask() {
         //Given
         Board project = prepareTestData();
-        final double entryAvg = ((double)20 + (double)10) / (double)3;
         //When
         List<TaskList> inProgressTasks = new ArrayList<>();
         inProgressTasks.add(new TaskList("In progress"));
@@ -164,6 +163,6 @@ class BoardTestSuite {
                 .mapToInt(Long::intValue)
                 .average().getAsDouble();
         //Then
-        Assertions.assertEquals(entryAvg, avg, 0);
+        Assertions.assertEquals(10.0, avg, 0);
     }
 }
