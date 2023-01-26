@@ -39,9 +39,7 @@ public class WorldTestSuite {
         earth.addContinent(europe);
         earth.addContinent(africa);
         //When
-        BigDecimal totalPeople = earth.getContinentList().stream()
-                .flatMap(continent -> continent.getCountryList().stream())
-                .map(PeopleCounter::getPeopleQuantity).reduce(BigDecimal.ZERO, (sum, current) -> sum = sum.add(current));
+        BigDecimal totalPeople = earth.getPeopleQuantity();
         //Then
         Assertions.assertEquals(entryPeopleSum, totalPeople);
     }
