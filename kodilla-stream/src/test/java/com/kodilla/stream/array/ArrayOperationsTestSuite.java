@@ -12,10 +12,9 @@ public class ArrayOperationsTestSuite {
         for (int i:entryNumbers) {
             sum += i;
         }
-        final double entryAvg = (double)sum / (double)entryNumbers.length;
         //When
         double avg = ArrayOperations.getAverage(entryNumbers);
         //Then
-        Assertions.assertEquals(entryAvg, avg, 0);
+        Assertions.assertEquals(4.7, avg, 0);
     }
 }
