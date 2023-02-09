@@ -29,8 +29,8 @@ public class MovieStore {
     public String displayTitlesInOneLine() {
         String mergedTitles = getMovies().entrySet().stream()
                 .flatMap(title -> title.getValue().stream())
-                .map(title -> title + '!')
-                .collect(Collectors.joining());
+                .map(title -> title)
+                .collect(Collectors.joining("!"));
 
         return mergedTitles;
     }
