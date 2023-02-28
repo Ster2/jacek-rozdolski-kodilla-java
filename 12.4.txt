@@ -1,0 +1,9 @@
+select i.SUMMARY, il.NAME
+from ISSUES i join ISSUESLISTS il on il.ID = i.ISSUESLIST_ID;
+
+select i.SUMMARY, u.id
+from ISSUES i join USERS u on i.USER_ID_ASSIGNEDTO = u.ID;
+
+select u.FIRSTNAME, u.LASTNAME, count(*) as "Ilość przypisanych zadań"
+from ISSUES i join USERS u on i.USER_ID_ASSIGNEDTO = u.ID
+group by u.FIRSTNAME, u.LASTNAME;
