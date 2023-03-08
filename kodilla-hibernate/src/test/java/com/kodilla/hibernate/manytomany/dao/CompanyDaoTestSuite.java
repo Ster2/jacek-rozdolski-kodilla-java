@@ -2,20 +2,22 @@ package com.kodilla.hibernate.manytomany.dao;
 
 import com.kodilla.hibernate.manytomany.Company;
 import com.kodilla.hibernate.manytomany.Employee;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 @SpringBootTest
-class CompanyDaoTestSuite {
-
+public class CompanyDaoTestSuite {
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private EmployeeDao employeeDao;
 
     @Test
-    void testSaveManyToMany() {
+    public void testSaveManyToMany(){
         //Given
         Employee johnSmith = new Employee("John", "Smith");
         Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
@@ -46,17 +48,48 @@ class CompanyDaoTestSuite {
         int greyMatterId = greyMatter.getId();
 
         //Then
-        assertNotEquals(0, softwareMachineId);
-        assertNotEquals(0, dataMaestersId);
-        assertNotEquals(0, greyMatterId);
+        Assert.assertNotEquals(0, softwareMachineId);
+        Assert.assertNotEquals(0, dataMaestersId);
+        Assert.assertNotEquals(0, greyMatterId);
 
         //CleanUp
-        //try {
-        //    companyDao.deleteById(softwareMachineId);
-        //    companyDao.deleteById(dataMaestersId);
-        //    companyDao.deleteById(greyMatterId);
-        //} catch (Exception e) {
-        //    //do nothing
-        //}
+        try {
+            companyDao.deleteById(softwareMachineId);
+            companyDao.deleteById(dataMaestersId);
+            companyDao.deleteById(greyMatterId);
+        } catch (Exception e) {
+            //do nothing
+        }
+    }
+
+    @Test
+    public void testRetrieveEmployeeByLastName() {
+        //Given
+        Employee employee = new Employee("Jan", "Nowak");
+        String lastname = employee.getLastname();
+        //When
+        employeeDao.save(employee);
+        int id = employee.getId();
+        List<Employee> readList = employeeDao.retrieveEmployeeByLastName(lastname);
+        //Then
+        Assert.assertEquals(1, readList.size());
+        //CleanUp
+        employeeDao.deleteById(id);
+    }
+
+    @Test
+    public void testRetrieveCompanyByName() {
+        //Given
+        Company company = new Company("softwareMachineId");
+        Company company2 = new Company("dataMaestersId");
+        //When
+        companyDao.save(company);
+        companyDao.save(company2);
+        List<Company> readList = companyDao.retrieveCompanyByName("dat");
+        //Then
+        Assert.assertEquals(1, readList.size());
+        Assert.assertEquals("dataMaestersId", readList.get(0).getName());
+        //CleanUp
+        companyDao.deleteAll();
     }
 }

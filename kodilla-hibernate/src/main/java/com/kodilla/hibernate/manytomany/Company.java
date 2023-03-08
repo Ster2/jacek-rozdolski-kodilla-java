@@ -7,16 +7,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Company.retrieveCompanyByName",
+                query = "SELECT * FROM COMPANIES " +
+                        "WHERE SUBSTR(COMPANY_NAME, 1, 3) = :COMPANY_NAME",
+                resultClass = Company.class
+        )
+}
+)
+
 @Entity
 @Table(name = "COMPANIES")
 public class Company {
-
     private int id;
     private String name;
-    private List <Employee> employees = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
 
-    public Company() {
-    }
+    public Company(){}
 
     public Company(String name) {
         this.name = name;
@@ -30,10 +38,18 @@ public class Company {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @NotNull
-    @Column(name = "COMPANY_NAME")
+    @Column(name = "COMPANY_NAME", unique = true)
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "companies")
@@ -41,15 +57,7 @@ public class Company {
         return employees;
     }
 
-    private void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
-    private void setId(int id) {
-        this.id = id;
-    }
-
-    private void setName(String name) {
-        this.name = name;
+    public void setEmployees(List<Employee> employees) {
+        this.employees = this.employees;
     }
 }

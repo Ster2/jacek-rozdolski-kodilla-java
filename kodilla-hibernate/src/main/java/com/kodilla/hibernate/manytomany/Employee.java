@@ -6,17 +6,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "Employee.retrieveEmployeeByLastName",
+                query = "FROM Employee WHERE lastname = :LASTNAME"
+        )
+})
 @Entity
 @Table(name = "EMPLOYEES")
 public class Employee {
-
     private int id;
     private String firstname;
     private String lastname;
-    private List <Company> companies = new ArrayList<>();
+    private List<Company> companies = new ArrayList<>();
 
-    public Employee() {
-    }
+    public Employee(){}
 
     public Employee(String firstname, String lastname) {
         this.firstname = firstname;
@@ -31,16 +35,28 @@ public class Employee {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @NotNull
     @Column(name = "FIRSTNAME")
     public String getFirstname() {
         return firstname;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
     @NotNull
     @Column(name = "LASTNAME")
     public String getLastname() {
         return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -53,19 +69,7 @@ public class Employee {
         return companies;
     }
 
-    private void setCompanies(List<Company> companies) {
+    public void setCompanies(List<Company> companies) {
         this.companies = companies;
-    }
-
-    private void setId(int id) {
-        this.id = id;
-    }
-
-    private void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    private void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 }
