@@ -1,8 +1,8 @@
 package com.kodilla.hibernate.manytomany;
 
-import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,4 +72,6 @@ public class Employee {
     public void setCompanies(List<Company> companies) {
         this.companies = companies;
     }
+
+
 }

@@ -1,9 +1,11 @@
 package com.kodilla.hibernate.manytomany;
 
 
-import jakarta.persistence.*;
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class Company {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = this.employees;
+    private void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

@@ -1,7 +1,11 @@
 package com.kodilla.hibernate.invoice;
 
-import jakarta.persistence.*;
+
+import org.hibernate.annotations.Entity;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

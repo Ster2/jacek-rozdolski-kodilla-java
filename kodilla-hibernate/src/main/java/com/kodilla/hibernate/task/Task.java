@@ -1,8 +1,8 @@
 package com.kodilla.hibernate.task;
 
-import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @NamedQueries({
