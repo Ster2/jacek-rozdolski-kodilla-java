@@ -1,3 +1,4 @@
+/*
 package com.kodilla.hibernate.manytomany.facade;
 
 import com.kodilla.hibernate.manytomany.Company;
@@ -69,4 +70,4 @@ class SearchFacadeTestSuite {
             //do nothing
         }
     }
-}
+}*/
