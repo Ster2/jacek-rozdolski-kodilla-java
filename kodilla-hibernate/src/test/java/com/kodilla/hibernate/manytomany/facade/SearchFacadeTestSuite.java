@@ -1,73 +1,78 @@
-/*
 package com.kodilla.hibernate.manytomany.facade;
 
 import com.kodilla.hibernate.manytomany.Company;
+import com.kodilla.hibernate.manytomany.Employee;
 import com.kodilla.hibernate.manytomany.dao.CompanyDao;
-import org.junit.jupiter.api.Test;
+import com.kodilla.hibernate.manytomany.dao.EmployeeDao;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
-class SearchFacadeTestSuite {
-
+public class SearchFacadeTestSuite {
     @Autowired
-    private SearchFacade searchFacade;
-
+    CompanyDao companyDao;
     @Autowired
-    private CompanyRetriever companyRetriever;
-
+    EmployeeDao employeeDao;
     @Autowired
-    private CompanyDao companyDao;
+    SearchFacade searchFacade;
 
     @Test
-    void testShouldRetrieveCompanyContains() {
+    public void testSearchFacade() {
         //Given
-        List<Company> companies = companyRetriever.retrieve();
+        Employee johnSmith = new Employee("John", "Smith");
+        Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
+        Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
 
-        companyDao.saveAll(companies);
+        Company softwareMachine = new Company("Software Machine");
+        Company dataMaesters = new Company("Data Maesters");
+        Company greyMatter = new Company("Grey Matter");
+
+        softwareMachine.getEmployees().add(johnSmith);
+        dataMaesters.getEmployees().add(stephanieClarckson);
+        dataMaesters.getEmployees().add(lindaKovalsky);
+        greyMatter.getEmployees().add(johnSmith);
+        greyMatter.getEmployees().add(lindaKovalsky);
+
+        johnSmith.getCompanies().add(softwareMachine);
+        johnSmith.getCompanies().add(greyMatter);
+        stephanieClarckson.getCompanies().add(dataMaesters);
+        lindaKovalsky.getCompanies().add(dataMaesters);
+        lindaKovalsky.getCompanies().add(greyMatter);
+
+        companyDao.save(softwareMachine);
+        int softwareMachineId = softwareMachine.getId();
+        companyDao.save(dataMaesters);
+        int dataMaestersId = dataMaesters.getId();
+        companyDao.save(greyMatter);
+        int greyMatterId = greyMatter.getId();
 
         //When
-        List<Company> companiesResult = searchFacade.searchCompaniesContainsArg("%ata%");
 
-        //Then
-        assertEquals(companiesResult.size(), 2);
-        System.out.println(companiesResult);
-        //Clean up
         try {
-            companyDao.deleteById(companies.get(0).getId());
-            companyDao.deleteById(companies.get(1).getId());
-            companyDao.deleteById(companies.get(2).getId());
-
-        } catch (Exception e) {
-            //do nothing
+            List<Company> foundCompanies = searchFacade.processSearchCompany("%ter%");
+            assertEquals(2, foundCompanies.size());
+            assertTrue(foundCompanies.contains(dataMaesters));
+            assertTrue(foundCompanies.contains(greyMatter));
+        } catch (SearchingException e) {
         }
-    }
 
-    @Test
-    void testShouldRetrieveCompanyContains() {
-        //Given
-        List<Company> companies = companyRetriever.retrieve();
 
-        companyDao.saveAll(companies);
-
-        //When
-        List<Company> companiesResult = searchFacade.searchCompaniesContainsArg("%ata%");
-
-        //Then
-        assertEquals(companiesResult.size(), 2);
-        System.out.println(companiesResult);
-        //Clean up
         try {
-            companyDao.deleteById(companies.get(0).getId());
-            companyDao.deleteById(companies.get(1).getId());
-            companyDao.deleteById(companies.get(2).getId());
-
-        } catch (Exception e) {
-            //do nothing
+            List<Employee> foundEmployees = searchFacade.processSearchEmployee("%l%");
+            assertEquals(2, foundEmployees.size());
+            assertTrue(foundEmployees.contains(stephanieClarckson));
+            assertTrue(foundEmployees.contains(lindaKovalsky));
+        } catch (SearchingException e) {
         }
+
     }
-}*/
+}

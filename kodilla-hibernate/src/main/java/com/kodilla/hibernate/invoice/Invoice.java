@@ -1,7 +1,5 @@
 package com.kodilla.hibernate.invoice;
 
-
-import org.hibernate.annotations.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
 

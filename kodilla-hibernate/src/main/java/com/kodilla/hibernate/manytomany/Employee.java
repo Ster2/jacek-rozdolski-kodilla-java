@@ -6,10 +6,16 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "Employee.retrieveEmployeeByLastName",
-                query = "FROM Employee WHERE lastname = :LASTNAME"
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Employee.retrieveEmployeesWithLastName",
+                query = "SELECT * FROM EMPLOYEES WHERE LAST_NAME = :LASTNAME",
+                resultClass = Employee.class
+        ),
+        @NamedNativeQuery(
+                name = "Employee.retrieveEmployeesWhoseNamesContains",
+                query = "SELECT * FROM EMPLOYEES WHERE LAST_NAME LIKE CONCAT('%',:PIECEOFEMPLOYEENAME, '%') ",
+                resultClass = Employee.class
         )
 })
 @Entity
@@ -73,5 +79,23 @@ public class Employee {
         this.companies = companies;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Employee employee = (Employee) o;
+
+        if (id != employee.id) return false;
+        if (!firstname.equals(employee.firstname)) return false;
+        return lastname.equals(employee.lastname);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + firstname.hashCode();
+        result = 31 * result + lastname.hashCode();
+        return result;
+    }
 }
