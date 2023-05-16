@@ -9,13 +9,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class CrudAppTestSuite {
-    private static final String BASE_URL = "http://paulina-bukowska.github.io/";
+    private static final String BASE_URL = "https://ster2.github.io/";
     private WebDriver driver;
     private Random generator;
 
@@ -64,19 +61,11 @@ public class CrudAppTestSuite {
     }
 
     private void sendTestTaskToTrello(String taskName) throws InterruptedException {
-        // odświeżamy stronę, aby pojawiło się na niej zadanie dodane w metodzie createCrudAppTestTask()
         driver.navigate().refresh();
 
-        //  oczekiwanie aż załadują się dane "dociągane" przy pomocy technologii AJAX;
-        // oczekujemy aż pojawi się na stronie jakiekolwiek pole typu select (ComboBox służący do wyboru tablicy Trello)
         while(!driver.findElement(By.xpath("//select[1]")).isDisplayed());
 
         driver.findElements(By.xpath("//form[@class=\"datatable__row\"]")).stream()
-                // funkcja filtrująca, która odfiltrowuje jedynie te tagi form, w których znajduje się
-                // tag p zawierający tekst odpowiadający przekazanej nazwie zadania.
-                // Wykorzystujemy tu mechanizm wyszukiwania elementów w kontekście innego elementu -
-                // nasze wyrażenie XPath rozpoczyna się od kropki przed slashami, co oznacza wyszukiwanie w kontekście
-                // aktualnego elementu (.//), zamiast w całej stronie WWW
                 .filter(anyForm -> anyForm.findElement(By.xpath(".//p[@class=\"datatable__field-value\"]")).getText().equals(taskName))
                 .forEach(theForm -> {
                     WebElement selectElement = theForm.findElement(By.xpath(".//select[1]"));
@@ -86,8 +75,6 @@ public class CrudAppTestSuite {
                     WebElement buttonCreateCard = theForm.findElement(By.xpath(".//button[contains(@class, \"card-creation\")]"));
                     buttonCreateCard.click();
                 });
-        // Technologia AJAX! - strona nie jest przeładowywana!
-        // rozwiązanie - zastosowanie "sztywnego" timeoutu wynoszącego 5 sek
         Thread.sleep(5000);
     }
 
